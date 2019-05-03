@@ -1,17 +1,15 @@
-import React from 'react';
 import paths from './paths';
 
-const Home = () => <div>home</div>;
-const Swagger = () => <div>swagger</div>;
+import { HomePage, SwaggerUiPage } from './pages';
 
 const routes = [
   {
     path: paths.home.regex,
-    component: Home,
+    component: HomePage,
   },
   {
     path: paths.swagger.regex,
-    component: Swagger,
+    component: SwaggerUiPage,
   },
 ];
 
