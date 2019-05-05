@@ -103,10 +103,27 @@ export const simpleObj = {
   type: DATA_TYPES.object,
   properties: {
     id: {
-      type: DATA_TYPES.string,
+      type: DATA_TYPES.integer,
     },
     name: {
       type: DATA_TYPES.string,
+    },
+    isTrue: {
+      type: DATA_TYPES.boolean,
+    },
+    nested: {
+      type: DATA_TYPES.object,
+      properties: {
+        category: {
+          type: DATA_TYPES.string,
+        },
+      },
+    },
+    list: {
+      type: DATA_TYPES.array,
+      items: {
+        type: DATA_TYPES.string,
+      },
     },
   },
 };
@@ -116,19 +133,6 @@ export const requiredObj = {
   required: [
     'id',
   ],
-};
-
-export const complexObj = {
-  ...simpleObj,
-  properties: {
-    ...simpleObj.properties,
-    class: {
-      type: DATA_TYPES.object,
-      properties: {
-        ...simpleObj.properties,
-      },
-    },
-  },
 };
 
 export const numberedPropObj = {
@@ -176,5 +180,3 @@ export const simpleMixedAnyOf = {
     },
   ],
 };
-
-export const externalMockSource = 'https://petstore.swagger.io/v2/swagger.json';

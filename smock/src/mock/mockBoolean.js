@@ -1,5 +1,6 @@
 import faker from 'faker';
 
-const mockBoolean = () => faker.random.boolean();
+// TODO: is it possible to have definition config for boolean data type
+const mockBoolean = () => () => faker.random.boolean();
 
 export default mockBoolean;

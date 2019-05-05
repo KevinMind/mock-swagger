@@ -6,7 +6,7 @@ import mockString from './mockString';
 
 import { DATA_TYPES } from '../constants';
 
-export const getFactoryFunc = (type) => {
+const getFactoryFunc = (type) => {
   switch (type) {
     case DATA_TYPES.string:
       return mockString;

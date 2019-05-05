@@ -38,3 +38,5 @@ export const DATA_TYPES = {
   file: 'file',
   invalid: 'invalid',
 };
+
+export const externalMockSource = 'https://petstore.swagger.io/v2/swagger.json';

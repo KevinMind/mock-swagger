@@ -1,6 +1,6 @@
 import {
   getType, isMixedType, isNullable, isValidRefType, isValidFileType,
-} from './validate';
+} from './type';
 
 import { DATA_TYPES, STRING_FORMATS} from './constants';
 import * as mockData from './mockData';
@@ -44,11 +44,10 @@ describe('getType', () => {
     expect(getType(mockData.freeObject2)).toEqual(DATA_TYPES.object);
     expect(getType(mockData.freeObject3)).toEqual(DATA_TYPES.object);
     expect(getType(mockData.requiredObj)).toEqual(DATA_TYPES.object);
-    expect(getType(mockData.complexObj)).toEqual(DATA_TYPES.object);
     expect(getType(mockData.numberedPropObj)).toEqual(DATA_TYPES.object);
   });
   it('should validate nullable objects', () => {
-    const mock = mockData.setNullable(mockData.complexObj);
+    const mock = mockData.setNullable(mockData.simpleObj);
     expect(mock.nullable).toEqual(true);
     expect(isNullable(mock));
   });

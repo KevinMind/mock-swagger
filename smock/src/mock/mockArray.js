@@ -1,33 +1,25 @@
-import { includes, isEmpty, random } from 'lodash';
+import {
+  includes, isEmpty, random, times,
+} from 'lodash';
 
-import { isNullable } from '../validate';
+import { isNullable } from '../type';
 
 import getFunc from './func';
-import { getRandomType, returnNullableValue } from './shared';
+import { getRandomType, returnNullableValue, getCustomOrDefault } from './shared';
 
-const mockArray = (opts = {}) => {
-  const isNull = isNullable(opts);
-  const {
-    minItems, maxItems, items = {}, uniqueItems,
-  } = opts;
-  const min = minItems || 0;
-  const max = maxItems || 100;
-  const size = random(min, max);
+const getDefaultMock = ({
+  type, oneOf = [], anyOf = [], uniqueItems, items,
+} = {}, size) => {
   const arr = [];
 
-  // TODO: solve circular dependency problem.
-  // TODO: solve recursion problem
-
-  const { type, oneOf } = items;
-
-  while (arr.length < size) {
+  times(size, () => {
     let item;
     if (type && !isEmpty(type)) {
       const func = getFunc(type);
       item = func(items);
     }
-    if (oneOf) {
-      const oneOfTypes = oneOf.map(({ type: childType }) => childType);
+    if (oneOf.length || anyOf.length) {
+      const oneOfTypes = [...oneOf, ...anyOf].map(({ type: childType }) => childType);
       const randType = getRandomType(oneOfTypes);
       const func = getFunc(randType);
       item = func();
@@ -36,12 +28,25 @@ const mockArray = (opts = {}) => {
     if (!uniqueItems || !includes(arr, item)) {
       arr.push(item);
     }
-  }
-
-  if (isNull) {
-    return returnNullableValue(arr);
-  }
+  });
   return arr;
+};
+
+const mockArray = (opts = {}) => {
+  const isNull = isNullable(opts);
+  const { minItems, maxItems } = opts;
+  const min = minItems || 0;
+  const max = maxItems || 100;
+
+  return (mockFunc) => {
+    const size = random(min, max);
+    const arr = getCustomOrDefault(opts, getDefaultMock, mockFunc, size);
+
+    if (isNull) {
+      return returnNullableValue(arr);
+    }
+    return arr;
+  };
 };
 
 export default mockArray;

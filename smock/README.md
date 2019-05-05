@@ -1,5 +1,7 @@
 ### Base Rollup Project
 
+https://swagger.io/docs/specification/data-models/data-types/#array
+
 Comprehensive coverage of valid swagger model data typings
 https://swagger.io/docs/specification/data-models/data-types/
 

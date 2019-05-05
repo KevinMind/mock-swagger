@@ -5,6 +5,7 @@
     "build": "rollup -c",
     "start": "yarn build -w",
     "test": "jest",
+    "test:coverage": "yarn test --coverage",
     "lint": "eslint src",
     "pre-commit": "yarn lint && yarn test --coverage && yarn build",
     "commit": "yarn pre-commit && git add . &&  git-cz",

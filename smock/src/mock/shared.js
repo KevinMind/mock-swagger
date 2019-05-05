@@ -9,26 +9,12 @@ export const getRandomType = (options = Object.values(DATA_TYPES)) => {
   return options[idx];
 };
 
-export const getFactoryFunc = ({
-  mockArray,
-  mockBoolean,
-  mockIntNum,
-  mockObject,
-  mockString,
-}) => (type) => {
-  switch (type) {
-    case DATA_TYPES.string:
-      return mockString;
-    case DATA_TYPES.integer:
-    case DATA_TYPES.number:
-      return mockIntNum();
-    case DATA_TYPES.array:
-      return mockArray;
-    case DATA_TYPES.object:
-      return mockObject;
-    case DATA_TYPES.boolean:
-      return mockBoolean;
-    default:
-      return () => {};
+export const getCustomOrDefault = (definition, defaultFunc, mockFunc, ...args) => {
+  if (mockFunc) {
+    if (typeof mockFunc === 'function') {
+      return mockFunc(definition);
+    }
+    throw new Error('invalid mockFunc provided: expected function');
   }
+  return defaultFunc(definition, ...args);
 };
