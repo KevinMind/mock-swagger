@@ -1,0 +1,44 @@
+{
+  "name": "pqrs",
+  "version": "0.1.7",
+  "scripts": {
+    "build": "rollup -c",
+    "start": "yarn build -w",
+    "test": "jest",
+    "lint": "eslint src",
+    "pre-commit": "yarn lint && yarn test --coverage && yarn build",
+    "commit": "yarn pre-commit && git add . &&  git-cz",
+    "release-version": "yarn build && standard-version",
+    "release": "git push --follow-tags origin master"
+  },
+  "main": "./build",
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "babel-jest": "^24.7.1",
+    "cz-conventional-changelog": "2.1.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "jest": "^24.7.1",
+    "rollup": "^1.10.1",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-run": "^1.1.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "standard-version": "^5.0.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "files": [
+    "build"
+  ],
+  "dependencies": {
+    "express": "^4.16.4",
+    "swagger-express-middleware": "^2.0.2"
+  }
+}

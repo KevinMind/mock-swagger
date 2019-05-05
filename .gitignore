@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/swagger-mock/node_modules
+/smock/node_modules
 /.pnp
 .pnp.js
 

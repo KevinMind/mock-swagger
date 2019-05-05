@@ -1,8 +1,10 @@
 import faker from 'faker';
+import {times} from 'lodash';
 
 import mockObject from './mockObject';
 
 import { simpleObj } from '../mockData';
+import { DATA_TYPES } from '../constants';
 
 const validateMockObject = (obj) => {
   expect(typeof obj).toEqual('object');
@@ -30,7 +32,13 @@ describe('mockObject', () => {
     };
     const getObjectMock = mockObject(simpleObj);
     validateMockObject(getObjectMock(mockFunc));
-    // validateMockObject(getObjectMock(mockFunc));
-    // validateMockObject(getObjectMock(mockFunc));
+  });
+
+  it('should test nullable', () => {
+    times(10, () => {
+      const mockObj = { id: 5 };
+      const val = mockObject({ nullable: true, properties: { id: { type: DATA_TYPES.number } } })(() => mockObj);
+      expect(val === null || val === mockObj);
+    });
   });
 });

@@ -20,7 +20,7 @@ const getFactoryFunc = (type) => {
     case DATA_TYPES.boolean:
       return mockBoolean;
     default:
-      return () => {};
+      throw new Error(`invalid type: ${type} given. expected one of ${Object.values(DATA_TYPES).split(', ')}`);
   }
 };
 

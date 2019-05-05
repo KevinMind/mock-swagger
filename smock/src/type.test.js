@@ -1,11 +1,14 @@
 import {
-  getType, isMixedType, isNullable, isValidRefType, isValidFileType,
+  getType, isMixedType, isNullable, isValidRefType, isValidFileType, isValidPrimitive,
 } from './type';
 
-import { DATA_TYPES, STRING_FORMATS} from './constants';
+import { DATA_TYPES, STRING_FORMATS } from './constants';
 import * as mockData from './mockData';
 
 describe('getType', () => {
+  it('should test invalid type', () => {
+    expect(getType({})).toEqual(DATA_TYPES.invalid);
+  });
   it('should validate string objects', () => {
     expect(getType(mockData.simpleStr)).toEqual(DATA_TYPES.string);
     expect(getType(mockData.lengthedStr)).toEqual(DATA_TYPES.string);
@@ -59,5 +62,64 @@ describe('getType', () => {
   it('should validate mixed type objects', () => {
     expect(isMixedType(mockData.simpleMixedOneOf)).toEqual(true);
     expect(isMixedType(mockData.simpleStr)).toEqual(false);
+  });
+});
+
+describe('isNullable', () => {
+  it('should pass', () => {
+    const isNull = isNullable({ nullable: true });
+    const notNull1 = isNullable({ nullable: false });
+    const notNull2 = isNullable({ nullable: null });
+    const notNull3 = isNullable({ nullable: 3 });
+    const notNull4 = isNullable({ nullable: undefined });
+    expect(isNull);
+    expect(notNull1).toEqual(false);
+    expect(notNull2).toEqual(false);
+    expect(notNull3).toEqual(false);
+    expect(notNull4).toEqual(false);
+  });
+});
+
+describe('isMixedType', () => {
+  it('should pass', () => {
+    const isOneMixed = isMixedType({ oneOf: [] });
+    const isAnyMixed = isMixedType({ anyOf: [] });
+    const isNotMixed = isMixedType({});
+    expect(isOneMixed).toEqual(true);
+    expect(isAnyMixed).toEqual(true);
+    expect(isNotMixed).toEqual(false);
+  });
+});
+
+describe('isValidPrimitive', () => {
+  it('should pass', () => {
+    const isValid = isValidPrimitive({ type: DATA_TYPES.string });
+    const isNotValid = isValidPrimitive({ type: 'invalid' });
+    expect(isValid).toEqual(true);
+    expect(isNotValid).toEqual(false);
+  });
+});
+
+describe('isValidRefType', () => {
+  it('should pass', () => {
+    const isValid = isValidRefType({ $ref: '#/definitions/Something' });
+    const isNotValid1 = isValidRefType({ type: 'invalid' });
+    const isNotValid2 = isValidRefType({ type: 'invalid', $ref: '#/definitions/Something' });
+    expect(isValid).toEqual(true);
+    expect(isNotValid1).toEqual(false);
+    expect(isNotValid2).toEqual(false);
+  });
+});
+
+describe('isValidFileType', () => {
+  it('should pass', () => {
+    const isValid1 = isValidFileType({ type: DATA_TYPES.string, format: STRING_FORMATS.binary });
+    const isValid2 = isValidFileType({ type: DATA_TYPES.string, format: STRING_FORMATS.byte });
+    const isNotValid1 = isValidFileType({ type: DATA_TYPES.string });
+    const isNotValid2 = isValidFileType({ type: DATA_TYPES.object });
+    expect(isValid1).toEqual(true);
+    expect(isValid2).toEqual(true);
+    expect(isNotValid1).toEqual(false);
+    expect(isNotValid2).toEqual(false);
   });
 });

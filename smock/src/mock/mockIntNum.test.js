@@ -1,3 +1,5 @@
+import { times } from 'lodash';
+
 import mockIntNum from './mockIntNum';
 import { INTEGER_FORMATS, NUMBER_FORMATS } from '../constants';
 
@@ -28,5 +30,48 @@ describe('mock int/num', () => {
     expect(minExclude > 5).toEqual(true);
     expect(maxExclude < 5).toEqual(true);
     expect(minMaxExclude === 5).toEqual(true);
+  });
+
+  it('should test custom mock', () => {
+    const failMock = () => 'string';
+    const mock = mockIntNum();
+    try {
+      mock(failMock);
+    } catch (e) {
+      expect(e.message);
+    }
+  });
+
+  it('should test custom mock failing', () => {
+    const passMock = () => 234;
+    const mock = mockIntNum();
+    const pass = mock(passMock);
+    expect(pass).toEqual(passMock());
+  });
+
+  it('should test custom mock too high/low', () => {
+    const mock = mockIntNum({ maximum: 5, minimum: 5 });
+
+    const highMock = () => 6;
+    const lowMock = () => 4;
+
+    try {
+      mock(highMock);
+    } catch (e) {
+      expect(e.message);
+    }
+
+    try {
+      mock(lowMock);
+    } catch (e) {
+      expect(e.message);
+    }
+  });
+
+  it('should test nullable', () => {
+    times(10, () => {
+      const val = mockIntNum({ nullable: true })(() => 5);
+      expect(val === null || val === 5);
+    });
   });
 });

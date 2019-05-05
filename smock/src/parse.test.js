@@ -3,14 +3,14 @@ import { getDefinitions, parse } from './parse';
 import { externalMockSource } from './constants';
 
 const mockUser = {
-  id: faker.random.number,
-  username: faker.internet.userName,
-  firstName: faker.name.firstName,
-  lastName: faker.name.lastName,
-  email: faker.internet.email,
-  password: faker.lorem.word,
-  phone: () => faker.phone.phoneNumberFormat(),
-  userStatus: faker.random.number,
+  id: () => 123,
+  username: () => 'username',
+  firstName: () => 'firstName',
+  lastName: () => 'lastName',
+  email: () => 'email',
+  password: () => 'password',
+  phone: () => '281-316-1142',
+  userStatus: () => 123,
 };
 
 describe('getDefinitions', () => {
@@ -22,5 +22,7 @@ describe('getDefinitions', () => {
     expect(User.validate);
     expect(User.mock);
     expect(User.type);
+    const mock = User.mock(mockUser);
+    Object.keys(mockUser).forEach(property => expect(mock[property]).toEqual(mockUser[property]()));
   });
 });
